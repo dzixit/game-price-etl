@@ -1,0 +1,13 @@
+# Środowisko Pythona
+.venv/
+__pycache__/
+*.py[cod]
+
+# Lokalna konfiguracja i klucze API
+.env
+
+# Pobrane dane
+data/
+
+# Ustawienia PyCharma
+.idea/
