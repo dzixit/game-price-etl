@@ -124,6 +124,10 @@ def main():
 
     print(f"Rekordy pominięte w podsumowaniu: {incomplete_records}")
 
+    if incomplete_records > 0:
+        print("Nie wszystkie rekordy przeszły weryfikację wymaganych pól.")
+        return 1
+
     return 0
 
 

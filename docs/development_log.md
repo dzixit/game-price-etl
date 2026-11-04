@@ -233,3 +233,32 @@ Brak wymaganego pola powoduje zwrócenie kodu 1.
 ### Kolejny krok
 Poprawić sygnalizowanie błędów w check_config.py
 i fetch_history.py oraz sprawdzić te zachowania testami.
+
+
+## Poprawa sygnalizowania błędów
+
+### Zmiany
+- check_config.py zwraca kod 1 przy brakującym, pustym
+  lub zawierającym wyłącznie spacje kluczu.
+- Obecność niepustego klucza powoduje zwrócenie kodu 0.
+  Nie oznacza to sprawdzenia jego ważności.
+- fetch_history.py zwraca kod 1, jeśli choć jeden rekord
+  zostanie pominięty podczas odczytu wymaganych pól.
+- Pusta historia pozostaje poprawną odpowiedzią z kodem 0.
+- Surowa odpowiedź zostaje zachowana również wtedy,
+  gdy zawiera niepoprawne rekordy.
+
+### Weryfikacja
+Dodano cztery testy konfiguracji i cztery testy pobierania
+historii. Testy pobierania wykorzystują symulowaną odpowiedź
+API i pliki tymczasowe, bez połączenia z usługą.
+
+Uruchomiono:
+python -m unittest discover -s tests -v
+
+Wynik: wszystkie 13 testów zakończyło się powodzeniem.
+
+### Zakres sprawdzenia
+Testy sprawdzają wyniki funkcji main() oraz zapis odpowiedzi.
+Nie obejmują wszystkich możliwych awarii ani pełnej
+poprawności danych biznesowych.

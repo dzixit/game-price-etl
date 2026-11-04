@@ -131,8 +131,9 @@ niewyjaśnione i wymaga dalszej weryfikacji.
 Uruchomienie skryptu pozwoliło odtworzyć analizę lokalnie.
 Nie stanowi jednak niezależnego dowodu poprawności
 wszystkich reguł, ponieważ kod również przygotowano
-przy wsparciu AI. Potrzebne są jeszcze testy na przykładach
-z celowo wprowadzonymi błędami.
+przy wsparciu AI. Następnie wykonano pięć testów na przygotowanych danych,
+w tym przypadkach z celowo wprowadzonymi błędami.
+Ich przebieg opisano w sekcji 6.
 
 ## 5. Uwagi z przeglądu kodu
 
@@ -143,9 +144,16 @@ propozycji kodu:
 - fetch_history.py może zwrócić kod 0 również wtedy,
   gdy wszystkie rekordy zostaną pominięte w podsumowaniu.
 
-Poprawki tych zachowań pozostają do wykonania.
-Przed automatyzacją proces musi poprawnie sygnalizować
-nieudane wykonania.
+Na podstawie przeglądu poprawiono oba zachowania.
+AI zaproponowało zmiany i testy, które dodałem oraz
+uruchomiłem lokalnie.
+
+Cztery testy konfiguracji i cztery testy pobierania historii
+zakończyły się powodzeniem. Łącznie z wcześniejszymi
+testami analizatora zaliczono 13 testów.
+
+Sprawdzono również zachowanie surowej odpowiedzi przy
+niepoprawnych rekordach. Testy nie wymagały połączenia z API.
 
 ## 6. Testowanie na celowo błędnych danych
 
