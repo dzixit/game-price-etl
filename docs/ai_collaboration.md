@@ -170,6 +170,28 @@ Ponieważ analizator i testy powstały przy wsparciu AI,
 wynik traktuję jako sprawdzenie konkretnych zachowań,
 a nie pełne potwierdzenie poprawności programu.
 
+## 7. Transformacja danych i jej weryfikacja
+
+### Wsparcie AI
+AI zaproponowało mapowanie JSON na kolumny CSV,
+przygotowało kod transformacji i trzy testy automatyczne.
+Wyjaśniło zastosowanie Decimal, UTC oraz zapisu
+przez plik tymczasowy.
+
+### Moje działania i weryfikacja
+Dodałem kod i uruchomiłem transformację lokalnie.
+Skrypt przekształcił 398 rekordów bez zgłoszonych błędów.
+
+Następnie uruchomiłem cały zestaw testów.
+Wszystkie 16 testów zakończyło się powodzeniem,
+w tym trzy nowe testy transformacji.
+
+### Wniosek
+Sprawdzono wartości CSV, przeliczenie czasu, powtarzalność
+zapisu oraz ochronę poprzedniego wyniku przy błędnych danych.
+Testy dotyczą określonych przypadków i nie stanowią pełnej
+walidacji danych źródłowych.
+
 ## Następne działania
 
 - Poprawić sygnalizowanie błędów w skryptach.

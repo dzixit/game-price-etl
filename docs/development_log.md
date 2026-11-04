@@ -262,3 +262,39 @@ Wynik: wszystkie 13 testów zakończyło się powodzeniem.
 Testy sprawdzają wyniki funkcji main() oraz zapis odpowiedzi.
 Nie obejmują wszystkich możliwych awarii ani pełnej
 poprawności danych biznesowych.
+
+## Transformacja historii cen z JSON do CSV
+
+### Wykonane działania
+- Dodano src/transform_history.py.
+- Przekształcono zagnieżdżone rekordy JSON w płaską tabelę.
+- Ujednolicono znaczniki czasu do UTC.
+- Kwoty odczytano z wykorzystaniem Decimal.
+- Dodano identyfikator gry, region i nazwę pliku źródłowego.
+- Wynik zapisano w data/processed, zachowując surowy JSON.
+
+### Wynik uruchomienia
+- Rekordy wejściowe: 398.
+- Rekordy przekształcone: 398.
+- Rekordy z błędami: 0.
+- Kod zakończenia: 0.
+
+### Testy
+Dodano trzy testy:
+- poprawność pól CSV, kwot i przeliczenia czasu na UTC;
+- ponowne uruchomienie bez dopisywania wierszy;
+- zachowanie poprzedniego CSV przy błędnym rekordzie.
+
+Uruchomiono:
+python -m unittest discover -s tests -v
+
+Wynik: wszystkie 16 testów zakończyło się powodzeniem.
+
+### Ograniczenia
+Transformacja dotyczy wskazanego pliku jednej gry i regionu.
+Nie usuwa duplikatów istniejących w danych wejściowych
+i nie potwierdza kompletności historii.
+
+### Kolejny krok
+Zaprojektować tabelę PostgreSQL i sposób ładowania danych
+bez tworzenia duplikatów przy ponownym imporcie.
