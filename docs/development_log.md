@@ -141,3 +141,64 @@ nie stanowi uzupełnienia brakujących polskich cen.
 Przeanalizować zapisany plik JSON dla US bez ponownego
 pobierania danych. Sprawdzić najstarsze rekordy, zakres
 dat dla poszczególnych sklepów, braki i duplikaty.
+
+## Analiza pliku historii US przy wsparciu AI
+
+### Wykonane działania
+Przekazano zapisany plik JSON do analizy w ChatGPT.
+Sprawdzenia wykonano na pliku, bez ponownego pobierania danych.
+
+### Wyniki
+- Liczba rekordów: 398.
+- Identyczne duplikaty: 0.
+- Powtórzenia kombinacji sklep ID + znacznik czasu + waluta: 0.
+- Wszystkie ceny ofert są w USD.
+- Zakres cen ofert: 5,09–17,21 USD.
+- Ujemne ceny ofert: 0.
+- Ceny ofert wyższe od cen regularnych: 0.
+- Rozbieżności między amount × 100 a amountInt: 0.
+
+Najwięcej rekordów mają GOG (126), Humble Store (117)
+i Steam (115). Każdy z tych sklepów ma wpisy z lat 2017–2026,
+ale ciągłość historii pozostaje niepotwierdzona.
+
+Najstarszy wpis należy do Humble Widgets i ma cenę 15 USD.
+Jest jedynym rekordem tego sklepu, a jego czas odpowiada
+dokładnie początkowi zapytania. Znaczenie tej daty wymaga
+dalszego sprawdzenia.
+
+### Wnioski
+Zakres historii należy oceniać osobno dla każdego sklepu.
+Pojedynczego wpisu nie można traktować jako dowodu stałej
+ceny w całym analizowanym okresie.
+
+### Kolejny krok
+Przygotować lokalny skrypt analizy JSON i odtworzyć wyniki
+w PyCharmie, aby weryfikacja była powtarzalna.
+
+## Lokalna weryfikacja analizy historii US
+
+### Wykonane działania
+- Dodano src/analyze_history.py.
+- Uruchomiono analizę na wcześniej zapisanym pliku US.
+- Nie wykonywano nowych zapytań do API.
+- Porównano wynik lokalny z wcześniejszą analizą ChatGPT.
+
+### Wynik
+- Poprawnie odczytano 398 z 398 rekordów.
+- Nie wykryto identycznych duplikatów ani powtórzeń
+  kombinacji sklep + czas UTC + waluta.
+- Nie wykryto ujemnych cen, cen ofert wyższych od regularnych
+  ani rozbieżności amount × 100 i amountInt dla USD.
+- Zakres cen: 5,09–17,21 USD.
+- Skrypt zakończył się kodem 0.
+- Wyniki sprawdzonych kontroli były zgodne z analizą AI.
+
+### Ograniczenia
+Sprawdzenia dotyczą jednego pliku i określonych reguł.
+Nie potwierdzają kompletności historii.
+Analizator nie został jeszcze przetestowany na danych
+z celowo wprowadzonymi błędami.
+
+### Kolejny krok
+Sprawdzić wykrywanie błędów na małych danych testowych.

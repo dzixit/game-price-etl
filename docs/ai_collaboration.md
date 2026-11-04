@@ -1,11 +1,13 @@
 # Współpraca z AI
 
-W tym dokumencie zapisuję istotne przykłady wykorzystania
-ChatGPT podczas realizacji projektu: propozycje, podjęte
-decyzje i sposób sprawdzania rozwiązań.
+Projekt tworzę przy wsparciu ChatGPT. Wykorzystuję AI
+do planowania pracy, przygotowywania kodu, wyjaśniania
+rozwiązań i analizy problemów.
 
-Nie jest to pełny zapis rozmów. Dokument ma pokazywać,
-jak wykorzystuję AI i jak oceniam jego podpowiedzi.
+W tym dokumencie zapisuję ważniejsze przykłady współpracy:
+co zaproponowało AI, jakie decyzje podjąłem oraz jak
+sprawdziłem wyniki. Szczegółowy przebieg uruchomień znajduje
+się w [dzienniku prac](development_log.md).
 
 ## 1. Wybór początkowego podejścia
 
@@ -14,28 +16,140 @@ Wybrać sposób rozpoczęcia projektu ETL dotyczącego cen gier.
 Rozważałem zwykły projekt Pythona oraz wykorzystanie PySparka.
 
 ### Wsparcie AI
-AI zaproponowało rozpoczęcie od projektu Pure Python,
-pobierania danych przez API i zapisywania odpowiedzi do JSON.
+AI zaproponowało rozpoczęcie od Pythona, pobierania danych
+przez API i zapisywania odpowiedzi do JSON.
 PySpark został wskazany jako możliwe późniejsze rozszerzenie.
 
-### Podjęta decyzja
+### Moja decyzja i działania
 Rozpocząłem od projektu Pure Python w PyCharmie.
-Na pierwszym etapie skupiam się na poznaniu danych
-i zbudowaniu działającego procesu pobierania.
+Utworzyłem środowisko wirtualne, strukturę folderów
+i pliki konfiguracyjne.
 
-Nie mam jeszcze wyników pomiarów, które uzasadniałyby
-zastosowanie przetwarzania rozproszonego.
+Na tym etapie priorytetem jest poznanie źródła danych
+i zbudowanie działającego procesu pobierania.
+Nie mam wyników pomiarów uzasadniających użycie Sparka.
 
-### Wykonane działania
-- Utworzyłem projekt w PyCharmie.
-- Utworzyłem foldery src, docs i data.
-- Przygotowałem plik .gitignore na podstawie propozycji AI.
+### Weryfikacja
+Uruchomiłem skrypt sprawdzający konfigurację.
+Najpierw otrzymałem komunikat o braku klucza, a po jego
+uzupełnieniu potwierdziłem poprawny odczyt konfiguracji.
 
-### Stan weryfikacji
-Struktura projektu została przygotowana.
-Dostęp do API i zakres dostępnej historii cen nie zostały
-jeszcze zweryfikowane.
+## 2. Pierwsze pobranie danych i wybór gry
 
-### Kolejny krok
-Przygotować konfigurację, wykonać pierwsze zapytanie do API
-i udokumentować rzeczywisty wynik.
+### Zadanie
+Połączyć się z IsThereAnyDeal i znaleźć identyfikator
+podstawowej gry Hollow Knight.
+
+### Wsparcie AI
+AI przygotowało kod wysyłający zapytanie do API,
+obsługujący błędy i zapisujący odpowiedź do pliku JSON.
+Wyjaśniło też rolę identyfikatora gry.
+
+### Moje działania i weryfikacja
+Uruchomiłem skrypt lokalnie. API zwróciło status HTTP 200
+i pięć wyników wyszukiwania.
+
+Sprawdziłem zwrócone tytuły. Oprócz podstawowej gry
+wyniki obejmowały Silksong i ścieżki dźwiękowe.
+Do dalszego testu wybrałem rekord Hollow Knight:
+
+018d937f-1ae9-734c-ba47-bd357cf07edd
+
+### Wniosek
+Samo podobieństwo nazw nie wystarcza do utożsamienia
+produktów. Dalsze zapytania wykonuję z użyciem
+identyfikatora wybranego rekordu.
+
+## 3. Porównanie historii dla PL i US
+
+### Zadanie
+Sprawdzić, czy źródło udostępnia dane pozwalające
+analizować ceny na przestrzeni lat.
+
+### Wsparcie AI
+AI przygotowało skrypt pobierający historię cen.
+Po uzyskaniu krótkiej historii dla Polski zaproponowało
+wykonanie analogicznego zapytania dla USA.
+
+### Moje działania i weryfikacja
+Uruchomiłem zapytania dla tej samej gry i tego samego
+początku okresu: 2017-01-01.
+
+- PL: 20 rekordów z 2026 roku, waluty EUR i PLN.
+- US: 398 rekordów z datami od 2017 do 2026 roku,
+  waluta USD.
+
+Zachowałem osobne pliki źródłowe dla obu regionów.
+
+### Podjęta decyzja
+Do kolejnego etapu analizy wykorzystuję próbkę US,
+ponieważ zawiera dłuższą historię dla badanej gry.
+Nie traktuję jej jako uzupełnienia polskich cen.
+
+### Ograniczenia
+Test dotyczy jednej gry. Nie potwierdza pokrycia
+całego katalogu ani kompletności historii.
+Przyczyna krótszego zakresu danych PL pozostaje nieustalona.
+
+## 4. Analiza JSON i lokalne odtworzenie wyników
+
+### Zadanie
+Sprawdzić strukturę danych, duplikaty, ceny i zakres
+historii poszczególnych sklepów.
+
+### Wsparcie AI
+Przekazałem zapisany plik US do analizy w ChatGPT.
+AI przeanalizowało dane, a następnie przygotowało
+analyze_history.py do wykonania kontroli lokalnie.
+
+### Moje działania
+Uruchomiłem skrypt w PyCharmie na tym samym pliku
+i porównałem wynik z wcześniejszą analizą AI.
+
+### Wynik weryfikacji
+- Odczytano poprawnie 398 z 398 rekordów.
+- Nie wykryto identycznych duplikatów.
+- Nie wykryto powtórzeń klucza sklep + czas UTC + waluta.
+- Nie wykryto ujemnych cen ofert.
+- Nie wykryto cen ofert wyższych od cen regularnych.
+- Dla USD nie wykryto różnic między amount × 100 a amountInt.
+- Zakres cen wyniósł 5,09–17,21 USD.
+- Skrypt zakończył się kodem 0.
+
+Wyniki tych kontroli były zgodne z wcześniejszą analizą.
+Lokalny skrypt przedstawia daty w UTC, co może zmienić
+dzień kalendarzowy względem zapisu ze strefą źródłową.
+
+### Wnioski i ograniczenia
+Najwięcej rekordów mają GOG, Humble Store i Steam.
+Zakres historii trzeba oceniać osobno dla każdego sklepu.
+
+Wpis Humble Widgets z ceną 15 USD ma czas równy
+początkowi zapytania. Jego znaczenie pozostaje
+niewyjaśnione i wymaga dalszej weryfikacji.
+
+Uruchomienie skryptu pozwoliło odtworzyć analizę lokalnie.
+Nie stanowi jednak niezależnego dowodu poprawności
+wszystkich reguł, ponieważ kod również przygotowano
+przy wsparciu AI. Potrzebne są jeszcze testy na przykładach
+z celowo wprowadzonymi błędami.
+
+## 5. Uwagi z przeglądu kodu
+
+Podczas przeglądu AI wskazało ograniczenia wcześniejszych
+propozycji kodu:
+
+- check_config.py przy braku klucza kończy się kodem 0;
+- fetch_history.py może zwrócić kod 0 również wtedy,
+  gdy wszystkie rekordy zostaną pominięte w podsumowaniu.
+
+Poprawki tych zachowań pozostają do wykonania.
+Przed automatyzacją proces musi poprawnie sygnalizować
+nieudane wykonania.
+
+## Następne działania
+
+- Sprawdzić analizator na małych danych testowych
+  zawierających duplikaty, braki i niepoprawne ceny.
+- Poprawić sygnalizowanie błędów w skryptach.
+- Wyjaśnić znaczenie najstarszego wpisu historii.

@@ -20,15 +20,23 @@ Docelowo aplikacja będzie:
 
 ## Aktualny stan
 
-Projekt jest na etapie przygotowania środowiska
-i sprawdzania możliwości pozyskania danych.
+Działa pierwszy etap pobierania danych z API IsThereAnyDeal:
+- odczyt klucza API z konfiguracji;
+- wyszukiwanie gier po nazwie;
+- pobieranie historii cen wybranej gry i regionu;
+- zapis odpowiedzi API do plików JSON;
+- podstawowe podsumowanie zakresu dat, sklepów i walut.
 
-Utworzono strukturę folderów oraz plik .gitignore.
-Kolejnym krokiem jest przygotowanie konfiguracji API
-i uruchomienie pierwszego zapytania.
+Dla Hollow Knight wykonano zapytania dla dwóch regionów:
+- PL: 20 rekordów, waluty EUR i PLN;
+- US: 398 rekordów, waluta USD.
 
-Dostępność wieloletniej historii cen dla wybranego rynku
-wymaga weryfikacji.
+Są to wyniki pierwszego testu, a nie stałe wielkości zbioru.
+Kompletność i jakość historii wymagają dalszej weryfikacji.
+
+Kolejny etap to analiza zapisanych danych: zakres historii
+poszczególnych sklepów, brakujące wartości oraz duplikaty.
+Baza danych, transformacje i harmonogram nie są jeszcze wdrożone.
 
 ## Technologie
 
