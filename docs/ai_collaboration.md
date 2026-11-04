@@ -147,9 +147,22 @@ Poprawki tych zachowań pozostają do wykonania.
 Przed automatyzacją proces musi poprawnie sygnalizować
 nieudane wykonania.
 
+## 6. Testowanie na celowo błędnych danych
+
+### Wsparcie AI
+AI przygotowało testy unittest oraz wyjaśniło wykorzystanie
+plików tymczasowych i podmiany ścieżki wejściowej.
+
+### Moje działania i weryfikacja
+Dodałem testy do projektu i uruchomiłem je lokalnie.
+Wszystkie pięć przypadków zakończyło się powodzeniem.
+
+Testy potwierdziły wykrywanie przygotowanych błędów.
+Ponieważ analizator i testy powstały przy wsparciu AI,
+wynik traktuję jako sprawdzenie konkretnych zachowań,
+a nie pełne potwierdzenie poprawności programu.
+
 ## Następne działania
 
-- Sprawdzić analizator na małych danych testowych
-  zawierających duplikaty, braki i niepoprawne ceny.
 - Poprawić sygnalizowanie błędów w skryptach.
 - Wyjaśnić znaczenie najstarszego wpisu historii.

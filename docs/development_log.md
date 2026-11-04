@@ -202,3 +202,34 @@ z celowo wprowadzonymi błędami.
 
 ### Kolejny krok
 Sprawdzić wykrywanie błędów na małych danych testowych.
+
+## Testy analizatora na celowo błędnych danych
+
+### Wykonane działania
+- Dodano tests/test_analyze_history.py.
+- Przygotowano pięć testów automatycznych w unittest.
+- Testy korzystają z tymczasowych plików JSON.
+- Oryginalne dane z API pozostają bez zmian.
+
+### Sprawdzone przypadki
+- Poprawny rekord.
+- Dwa identyczne rekordy.
+- Ujemna cena oferty.
+- Brak pola price.
+- Rozbieżność między amount a amountInt.
+
+### Weryfikacja
+Uruchomiono:
+python -m unittest discover -s tests -v
+
+Wynik: 5 testów zakończonych powodzeniem (OK).
+
+### Wnioski
+Analizator wykrywa problemy w przygotowanych przypadkach.
+Obecnie duplikaty i nieprawidłowe ceny są raportowane,
+ale nie powodują zwrócenia kodu błędu.
+Brak wymaganego pola powoduje zwrócenie kodu 1.
+
+### Kolejny krok
+Poprawić sygnalizowanie błędów w check_config.py
+i fetch_history.py oraz sprawdzić te zachowania testami.
